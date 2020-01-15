@@ -45,18 +45,18 @@ module.exports = {
         const { name } = request.params
         const { techs, latitude, longitude } = request.body
 
+        const coordinates = [longitude, latitude]
+
         const techArray = parseStringAsArray(techs)
         
-        const dev = await Dev.findOne({
-            name
+        let dev = await Dev.findOne({
+            github_username: name
         })
-        console.log(dev)
-        Dev.findOneAndUpdate({name}, request.body, {new: true},
-        (err, dev) => {
-            console.log(err, dev)
-        })
-       
-        console.log(res)
+        
+        dev.techs = techArray
+        dev.location.coordinates = coordinates
+        await dev.save()
+        
         return response.json({
             dev
         })
