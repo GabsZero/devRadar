@@ -60,5 +60,20 @@ module.exports = {
         return response.json({
             dev
         })
+    },
+
+    async destroy(request, response){
+        const { name } = request.params
+        const deleteResponse = await Dev.deleteOne({ github_username: name })
+
+        if(deleteResponse.deletedCount){
+            return response.json({
+                message: "Deletado com sucesso"
+            })
+        }
+
+        return response.json({
+            message: "Nenhum registro deletado"
+        })
     }
 }
